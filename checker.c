@@ -2,7 +2,7 @@
 
 #include <assert.h>
  
-int Batterystate(float value, float min, float max, const char* message) {
+int isParameterOutOfRange(float value, float min, float max, const char* message) {
 
     if (value < min || value > max) {
 
@@ -18,13 +18,13 @@ int Batterystate(float value, float min, float max, const char* message) {
  
 int batteryIsOk(float temperature, float soc, float chargeRate) {
 
-    int Temp = Batterystate(temperature, 0, 35, "Temperature out of range!");
+    int isTempOutOfRange = isParameterOutOfRange(temperature, 0, 45, "Temperature out of range!");
 
-    int SocRange = Batterystate(soc, 20, 75, "State of Charge out of range!");
+    int isSocOutOfRange = isParameterOutOfRange(soc, 20, 80, "State of Charge out of range!");
 
-    int ChargeRate = Batterystate(chargeRate, 0, 0.8, "Charge Rate out of range!");
+    int isChargeRateOutOfRange = isParameterOutOfRange(chargeRate, 0, 0.8, "Charge Rate out of range!");
  
-    return !(Temp || SocRange || ChargeRate);
+    return !(isTempOutOfRange || isSocOutOfRange || isChargeRateOutOfRange);
 
 }
  
@@ -35,4 +35,5 @@ int main() {
     assert(!batteryIsOk(50, 85, 0));
 
 }
+ 
  
