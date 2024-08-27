@@ -15,11 +15,11 @@ int Batterystate(float value, float min, float max, const char* message) {
     return 0;
 }
  
-int batterycondition(float temp, float stateofcharge, float percentageofcharge) {
+int batterycondition(float temp, float soc, float percentageofcharge) {
 
     int tempcheck = Batterystate(temp, 15, 32, "Temperature out of range!");
 
-    int soccheck = Batterystate(SOC, 0, 90, "StateofCharge out of range!");
+    int soccheck = Batterystate(soc, 0, 90, "StateofCharge out of range!");
 
     int chargeratecheck = Batterystate(percentageofcharge, 0, 0.6, "Charge Rate out of range!");
  
