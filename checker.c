@@ -22,7 +22,7 @@ int batterycondition(float temp, float stateofcharge, float percentageofcharge)
 
     int soc_check = Batterystate(stateofcharge, 0, 90, "StateofCharge out of range!");
 
-    int chargerate_check = Batterystate(totalchargeRate, 0, 0.6, "Charge Rate out of range!");
+    int chargerate_check = Batterystate(percentageofcharge, 0, 0.6, "Charge Rate out of range!");
  
     return !(temp_check || soc_check || chargerate_check);
 
