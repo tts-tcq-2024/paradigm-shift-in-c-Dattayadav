@@ -9,24 +9,26 @@ typedef struct {
 } ParameterConfig;
 
 int checkParameter(float value, ParameterConfig config, const char* warningMessage) {
-    int isOutOfRange = 0;
-    
     // Check if value is out of range
-    if (value < config.min || value > config.max) {
+    if (value < config.min) {
         printf("%s\n", warningMessage);
-        isOutOfRange = 1;
+        return 1;
+    } 
+    if (value > config.max) {
+        printf("%s\n", warningMessage);
+        return 1;
     }
     
     // Print warning if close to threshold and warnings are enabled
-    if (config.warningEnabled && !isOutOfRange) {
+    if (config.warningEnabled) {
         if (value < config.min + config.warningTolerance) {
             printf("Warning: Approaching discharge\n");
-        } 
+        }
         if (value > config.max - config.warningTolerance) {
             printf("Warning: Approaching charge-peak\n");
         }
     }
-    return isOutOfRange;
+    return 0;
 }
 
 int batteryIsOk(float temperature, float soc, float chargeRate, ParameterConfig tempConfig, ParameterConfig socConfig, ParameterConfig chargeRateConfig) {
