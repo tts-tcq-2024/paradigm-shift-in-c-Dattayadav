@@ -9,10 +9,11 @@ typedef struct {
 } ParameterConfig;
 
 void printWarningIfNeeded(float value, ParameterConfig config) {
-    if (config.warningEnabled) {
-        if ((value < config.min + config.warningTolerance) || (value > config.max - config.warningTolerance)) {
-            printf("Warning: Approaching threshold\n");
-        }
+    if (value < config.min + config.warningTolerance) {
+        printf("Warning: Approaching threshold\n");
+    } 
+    else if (value > config.max - config.warningTolerance) {
+        printf("Warning: Approaching threshold\n");
     }
 }
 
@@ -26,7 +27,7 @@ int isOutOfRange(float value, ParameterConfig config, const char* warningMessage
 
 int checkParameter(float value, ParameterConfig config, const char* warningMessage) {
     int outOfRange = isOutOfRange(value, config, warningMessage);
-    if (!outOfRange) {
+    if (!outOfRange && config.warningEnabled) {
         printWarningIfNeeded(value, config);
     }
     return outOfRange;
