@@ -8,31 +8,34 @@ typedef struct {
     float warningTolerance;     // Tolerance value for warnings
 } ParameterConfig;
 
-int checkParameter(float value, ParameterConfig config, const char* warningMessage) {
-    // Check if value is out of range
-    if (value < config.min) {
-        printf("%s\n", warningMessage);
-        return 1;
-    } 
-    if (value > config.max) {
-        printf("%s\n", warningMessage);
-        return 1;
-    }
-    
-    // Print warning if close to threshold and warnings are enabled
+void printWarningIfNeeded(float value, ParameterConfig config) {
     if (config.warningEnabled) {
         if (value < config.min + config.warningTolerance) {
             printf("Warning: Approaching discharge\n");
-        }
+        } 
         if (value > config.max - config.warningTolerance) {
             printf("Warning: Approaching charge-peak\n");
         }
     }
+}
+
+int isOutOfRange(float value, ParameterConfig config, const char* warningMessage) {
+    if (value < config.min || value > config.max) {
+        printf("%s\n", warningMessage);
+        return 1;
+    }
     return 0;
 }
 
+int checkParameter(float value, ParameterConfig config, const char* warningMessage) {
+    int outOfRange = isOutOfRange(value, config, warningMessage);
+    if (!outOfRange) {
+        printWarningIfNeeded(value, config);
+    }
+    return outOfRange;
+}
+
 int batteryIsOk(float temperature, float soc, float chargeRate, ParameterConfig tempConfig, ParameterConfig socConfig, ParameterConfig chargeRateConfig) {
-    // Check each parameter and accumulate any out-of-range conditions
     int isOutOfRange = 0;
     isOutOfRange |= checkParameter(temperature, tempConfig, "Temperature out of range!");
     isOutOfRange |= checkParameter(soc, socConfig, "State of Charge out of range!");
