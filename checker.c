@@ -10,11 +10,8 @@ typedef struct {
 
 void printWarningIfNeeded(float value, ParameterConfig config) {
     if (config.warningEnabled) {
-        if (value < config.min + config.warningTolerance) {
-            printf("Warning: Approaching discharge\n");
-        } 
-        if (value > config.max - config.warningTolerance) {
-            printf("Warning: Approaching charge-peak\n");
+        if ((value < config.min + config.warningTolerance) || (value > config.max - config.warningTolerance)) {
+            printf("Warning: Approaching threshold\n");
         }
     }
 }
